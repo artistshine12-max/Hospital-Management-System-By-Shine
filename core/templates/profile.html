@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="profile-container">
+
+    <div class="profile-card">
+
+        {% if profile.profile_image %}
+            <img src="{{ profile.profile_image.url }}" class="profile-image">
+        {% else %}
+            <img src="https://ui-avatars.com/api/?name={{ request.user.username }}" class="profile-image">
+        {% endif %}
+
+        <h2>
+            {{ request.user.first_name }}
+            {{ request.user.last_name }}
+        </h2>
+
+        <p>
+            <strong>Username:</strong>
+            {{ request.user.username }}
+        </p>
+
+        <p>
+            <strong>Email:</strong>
+            {{ request.user.email }}
+        </p>
+
+        <p>
+            <strong>Phone:</strong>
+            {{ profile.phone }}
+        </p>
+
+        <p>
+            <strong>Department:</strong>
+            {{ profile.department }}
+        </p>
+
+        <p>
+            <strong>Designation:</strong>
+            {{ profile.designation }}
+        </p>
+
+        <p>
+            <strong>Role:</strong>
+            {{ profile.role }}
+        </p>
+
+        <p>
+            <strong>Address:</strong>
+            {{ profile.address }}
+        </p>
+
+        <p>
+            <strong>Last Login:</strong>
+            {{ request.user.last_login }}
+        </p>
+
+        <br>
+
+        <a href="{% url 'edit_profile' %}" class="btn">
+            ✏ Edit Profile
+        </a>
+
+        <a href="{% url 'change_password' %}" class="btn">
+            🔒 Change Password
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

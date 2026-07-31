@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Prescriptions</h1>
+
+<a href="{% url 'add_prescription' %}">
+<button>Add Prescription</button>
+</a>
+
+<br><br>
+
+<table>
+
+<tr>
+
+<th>ID</th>
+<th>Patient</th>
+<th>Doctor</th>
+<th>Appointment</th>
+<th>Medicine</th>
+<th>Action</th>
+
+</tr>
+
+{% for prescription in prescriptions %}
+
+<tr>
+
+<td>{{ prescription.id }}</td>
+
+<td>{{ prescription.patient }}</td>
+
+<td>{{ prescription.doctor }}</td>
+
+<td>{{ prescription.appointment }}</td>
+
+<td>{{ prescription.medicines }}</td>
+
+<td>
+
+<a href="{% url 'edit_prescription' prescription.id %}">
+Edit
+</a>
+
+|
+
+<a href="{% url 'delete_prescription' prescription.id %}"
+onclick="return confirm('Delete Prescription?')">
+Delete
+</a>
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="6">
+No Prescriptions Found
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}

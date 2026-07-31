@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="settings-container">
+
+    <h1>🏥 Hospital Settings</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        <div class="settings-card">
+
+            <h2>Hospital Information</h2>
+
+            {{ form.hospital_name.label_tag }}
+            {{ form.hospital_name }}
+
+            {{ form.address.label_tag }}
+            {{ form.address }}
+
+            {{ form.about.label_tag }}
+            {{ form.about }}
+
+        </div>
+
+        <div class="settings-card">
+
+            <h2>Branding</h2>
+
+            {{ form.logo.label_tag }}
+            {{ form.logo }}
+
+            <br><br>
+
+            {{ form.favicon.label_tag }}
+            {{ form.favicon }}
+
+        </div>
+
+        <div class="settings-card">
+
+            <h2>Contact</h2>
+
+            {{ form.phone.label_tag }}
+            {{ form.phone }}
+
+            {{ form.email.label_tag }}
+            {{ form.email }}
+
+            {{ form.website.label_tag }}
+            {{ form.website }}
+
+        </div>
+
+        <div class="settings-card">
+
+            <h2>System Preferences</h2>
+
+            {{ form.currency.label_tag }}
+            {{ form.currency }}
+
+            {{ form.timezone.label_tag }}
+            {{ form.timezone }}
+
+            {{ form.date_format.label_tag }}
+            {{ form.date_format }}
+
+            {{ form.footer.label_tag }}
+            {{ form.footer }}
+
+        </div>
+
+        <br>
+
+        <button class="save-btn" type="submit">
+            💾 Save Settings
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

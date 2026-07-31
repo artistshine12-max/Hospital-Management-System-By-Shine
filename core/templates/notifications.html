@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+
+{% block content %}
+
+<h1>Notifications</h1>
+
+<div style="margin-bottom:20px;">
+
+    <a href="{% url 'mark_all_notifications' %}">
+        <button>✔ Mark All Read</button>
+    </a>
+
+    <a href="{% url 'delete_all_notifications' %}"
+       onclick="return confirm('Delete all notifications?')">
+
+        <button>🗑 Delete All</button>
+
+    </a>
+
+</div>
+
+<hr>
+
+{% for notification in notifications %}
+
+<div class="notification-card">
+
+    <h3>{{ notification.title }}</h3>
+
+    <p>{{ notification.message }}</p>
+
+    <small>{{ notification.created_at|naturaltime }}</small>
+
+    <br><br>
+
+    {% if not notification.is_read %}
+
+        <a href="{% url 'mark_notification' notification.id %}">
+            ✔ Mark Read
+        </a>
+
+        |
+
+    {% endif %}
+
+    <a href="{% url 'delete_notification' notification.id %}"
+       onclick="return confirm('Delete this notification?')">
+
+        🗑 Delete
+
+    </a>
+
+</div>
+
+<hr>
+
+{% empty %}
+
+<p>No notifications found.</p>
+
+{% endfor %}
+
+{% endblock %}

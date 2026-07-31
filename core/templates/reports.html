@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Hospital Reports</h1>
+<form method="GET">
+
+<label>
+
+Select Date
+
+</label>
+
+<input
+type="date"
+name="date">
+
+<button>
+
+Generate
+
+</button>
+
+</form>
+
+<hr>
+<div class="cards">
+
+    <div class="card">
+        <h2>Total Patients</h2>
+        <h1>{{ total_patients }}</h1>
+    </div>
+
+    <div class="card">
+        <h2>Total Doctors</h2>
+        <h1>{{ total_doctors }}</h1>
+    </div>
+
+    <div class="card">
+        <h2>Total Appointments</h2>
+        <h1>{{ total_appointments }}</h1>
+    </div>
+
+    <div class="card">
+        <h2>Total Revenue</h2>
+        <h1>${{ revenue }}</h1>
+    </div>
+
+</div>
+
+<hr>
+
+<h2>Recent Appointments</h2>
+
+<table>
+
+<tr>
+    <th>Patient</th>
+    <th>Doctor</th>
+    <th>Date</th>
+</tr>
+
+{% for appointment in recent_appointments %}
+
+<tr>
+
+<td>{{ appointment.patient }}</td>
+
+<td>{{ appointment.doctor }}</td>
+
+<td>{{ appointment.appointment_date }}</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="3">
+
+No appointments
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<hr>
+
+<h2>Recent Bills</h2>
+
+<table>
+
+<tr>
+
+<th>Patient</th>
+
+<th>Total</th>
+
+<th>Status</th>
+
+</tr>
+
+{% for bill in recent_bills %}
+
+<tr>
+
+<td>{{ bill.patient }}</td>
+
+<td>${{ bill.total_amount }}</td>
+
+<td>
+
+{% if bill.paid %}
+Paid
+{% else %}
+Pending
+{% endif %}
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="3">
+
+No Bills
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}

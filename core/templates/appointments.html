@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Appointments</h1>
+
+<form method="GET">
+    <input type="text" name="search" placeholder="Search Patient">
+    <button type="submit">Search</button>
+</form>
+
+<br>
+
+<a href="{% url 'add_appointment' %}">
+    <button>Add Appointment</button>
+</a>
+
+<br><br>
+<form method="GET">
+
+<input
+type="text"
+name="search"
+placeholder="Search">
+
+<input
+type="date"
+name="date">
+
+<button>
+
+Filter
+
+</button>
+
+</form>
+<table>
+
+<tr>
+    <th>ID</th>
+    <th>Patient</th>
+    <th>Doctor</th>
+    <th>Date</th>
+    <th>Time</th>
+    <th>Status</th>
+    <th>Action</th>
+</tr>
+
+{% for appointment in appointments %}
+
+<tr>
+
+<td>{{ appointment.id }}</td>
+
+<td>{{ appointment.patient }}</td>
+
+<td>{{ appointment.doctor }}</td>
+
+<td>{{ appointment.appointment_date }}</td>
+
+<td>{{ appointment.appointment_time }}</td>
+
+<td>{{ appointment.status }}</td>
+
+<td>
+
+<a href="{% url 'edit_appointment' appointment.id %}">
+Edit
+</a>
+
+|
+
+<a href="{% url 'delete_appointment' appointment.id %}"
+onclick="return confirm('Delete Appointment?')">
+
+Delete
+
+</a>
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="7">
+
+No Appointments Found
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<br>
+
+<div>
+
+{% if appointments.has_previous %}
+
+<a href="?page=1">First</a>
+
+<a href="?page={{ appointments.previous_page_number }}">
+Previous
+</a>
+
+{% endif %}
+
+Page {{ appointments.number }}
+
+of
+
+{{ appointments.paginator.num_pages }}
+
+{% if appointments.has_next %}
+
+<a href="?page={{ appointments.next_page_number }}">
+Next
+</a>
+
+<a href="?page={{ appointments.paginator.num_pages }}">
+Last
+</a>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Database Backups</h1>
+
+<a href="{% url 'create_backup' %}">
+    <button>Create Backup</button>
+</a>
+
+<br><br>
+
+<table>
+
+<tr>
+    <th>Backup File</th>
+    <th>Actions</th>
+</tr>
+
+{% for backup in backups %}
+
+<tr>
+
+<td>{{ backup.name }}</td>
+
+<td>
+
+<a href="{% url 'download_backup' backup.name %}">
+Download
+</a>
+
+|
+
+<a href="{% url 'delete_backup' backup.name %}"
+onclick="return confirm('Delete this backup?')">
+
+Delete
+
+</a>
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="2">
+
+No backups available.
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}

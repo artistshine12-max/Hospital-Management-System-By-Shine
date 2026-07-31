@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hospital Management Login</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<div style="width:350px;margin:120px auto;padding:30px;background:white;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,.2);">
+
+<h2 style="text-align:center;">Hospital Login</h2>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    <label>Username</label><br>
+    <input type="text" name="username" required><br><br>
+
+    <label>Password</label><br>
+    <input type="password" name="password" required><br><br>
+
+    <button type="submit">Login</button>
+
+</form>
+
+{% if messages %}
+    {% for message in messages %}
+        <p style="color:red;">{{ message }}</p>
+    {% endfor %}
+{% endif %}
+
+</div>
+
+</body>
+</html>

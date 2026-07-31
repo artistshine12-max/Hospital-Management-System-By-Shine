@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Doctors</h1>
+
+<form method="GET">
+    <input type="text"
+           name="search"
+           placeholder="Search by Specialization">
+
+    <button type="submit">Search</button>
+</form>
+
+<br>
+
+<a href="{% url 'add_doctor' %}">
+    <button>Add Doctor</button>
+</a>
+
+<br><br>
+<form method="GET">
+
+<input
+type="text"
+name="search"
+placeholder="Search patient..."
+value="{{ search }}">
+
+<button type="submit">
+
+Search
+
+</button>
+
+</form>
+
+<br>
+<table>
+
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Specialization</th>
+<th>Qualification</th>
+<th>Experience</th>
+<th>Phone</th>
+<th>Fee</th>
+<th>Action</th>
+</tr>
+
+{% for doctor in doctors %}
+
+<tr>
+
+<td>{{ doctor.id }}</td>
+
+<td>Dr. {{ doctor.first_name }} {{ doctor.last_name }}</td>
+
+<td>{{ doctor.specialization }}</td>
+
+<td>{{ doctor.qualification }}</td>
+
+<td>{{ doctor.experience }} Years</td>
+
+<td>{{ doctor.phone }}</td>
+
+<td>${{ doctor.fee }}</td>
+
+<td>
+
+<a href="{% url 'edit_doctor' doctor.id %}">Edit</a>
+
+|
+
+<a href="{% url 'delete_doctor' doctor.id %}"
+onclick="return confirm('Delete this doctor?')">
+
+Delete
+
+</a>
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="8">
+
+No Doctors Found
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+<div>
+
+{% if patients.has_previous %}
+
+<a href="?page=1&search={{ search }}">
+
+First
+
+</a>
+
+<a href="?page={{ patients.previous_page_number }}&search={{ search }}">
+
+Previous
+
+</a>
+
+{% endif %}
+
+Page
+
+{{ patients.number }}
+
+of
+
+{{ patients.paginator.num_pages }}
+
+{% if patients.has_next %}
+
+<a href="?page={{ patients.next_page_number }}&search={{ search }}">
+
+Next
+
+</a>
+
+<a href="?page={{ patients.paginator.num_pages }}&search={{ search }}">
+
+Last
+
+</a>
+
+{% endif %}
+
+</div>
+<br>
+
+<div>
+
+{% if doctors.has_previous %}
+
+<a href="?page=1">First</a>
+
+<a href="?page={{ doctors.previous_page_number }}">
+Previous
+</a>
+
+{% endif %}
+
+Page {{ doctors.number }}
+
+of
+
+{{ doctors.paginator.num_pages }}
+
+{% if doctors.has_next %}
+
+<a href="?page={{ doctors.next_page_number }}">
+Next
+</a>
+
+<a href="?page={{ doctors.paginator.num_pages }}">
+Last
+</a>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

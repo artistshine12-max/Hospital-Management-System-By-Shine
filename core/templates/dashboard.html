@@ -1,0 +1,359 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="dashboard-header">
+    <div>
+        <h1>🏥 Hospital Dashboard</h1>
+        <p>Welcome back! Here's today's overview.</p>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="cards">
+
+    <div class="card">
+        <h3>Total Patients</h3>
+        <h1>{{ total_patients }}</h1>
+        <small>Registered Patients</small>
+    </div>
+
+    <div class="card">
+        <h3>Total Doctors</h3>
+        <h1>{{ total_doctors }}</h1>
+        <small>Available Doctors</small>
+    </div>
+
+    <div class="card">
+        <h3>Appointments</h3>
+        <h1>{{ total_appointments }}</h1>
+        <small>Total Bookings</small>
+    </div>
+
+    <div class="card">
+        <h3>Total Revenue</h3>
+        <h1>${{ revenue }}</h1>
+        <small>Hospital Earnings</small>
+    </div>
+
+</div> 
+<hr>
+
+<h2>Dashboard Analytics</h2>
+
+<div class="chart-grid">
+
+    <div class="chart-card">
+        <h3>Patients Per Month</h3>
+        <canvas id="patientChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h3>Revenue Per Month</h3>
+        <canvas id="revenueChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h3>Bill Status</h3>
+        <canvas id="billChart"></canvas>
+    </div>
+
+</div>
+<!-- Quick Actions -->
+
+<div class="dashboard-section">
+
+<h2>⚡ Quick Actions</h2>
+
+<div class="quick-actions">
+
+    <a href="{% url 'add_patient' %}" class="action-card">
+        <h3>➕ Patient</h3>
+        <p>Add New Patient</p>
+    </a>
+
+    <a href="{% url 'add_doctor' %}" class="action-card">
+        <h3>👨‍⚕️ Doctor</h3>
+        <p>Add New Doctor</p>
+    </a>
+
+    <a href="{% url 'add_appointment' %}" class="action-card">
+        <h3>📅 Appointment</h3>
+        <p>Book Appointment</p>
+    </a>
+
+    <a href="{% url 'add_bill' %}" class="action-card">
+        <h3>💳 Billing</h3>
+        <p>Create Bill</p>
+    </a>
+
+</div>
+
+</div>
+
+<!-- Today's Appointments -->
+
+<div class="dashboard-section">
+
+<h2>📅 Today's Appointments</h2>
+
+<table>
+
+<tr>
+<th>Patient</th>
+<th>Doctor</th>
+<th>Date</th>
+<th>Time</th>
+</tr>
+
+{% for appointment in today_appointments %}
+
+<tr>
+
+<td>{{ appointment.patient }}</td>
+
+<td>{{ appointment.doctor }}</td>
+
+<td>{{ appointment.appointment_date }}</td>
+
+<td>{{ appointment.appointment_time }}</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="4">
+
+No appointments scheduled today.
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+<div class="dashboard-grid">
+
+    <!-- Recent Patients -->
+
+    <div class="dashboard-section">
+
+        <h2>🧑 Recent Patients</h2>
+
+        <ul class="list-group">
+
+            {% for patient in recent_patients %}
+
+            <li>
+
+                {{ patient.first_name }} {{ patient.last_name }}
+
+            </li>
+
+            {% empty %}
+
+            <li>No Patients</li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+    <!-- Recent Bills -->
+
+    <div class="dashboard-section">
+
+        <h2>💰 Recent Bills</h2>
+
+        <ul class="list-group">
+
+            {% for bill in recent_bills %}
+
+            <li>
+
+                Bill #{{ bill.id }}
+
+                <strong style="float:right;">
+
+                    ${{ bill.total_amount }}
+
+                </strong>
+
+            </li>
+
+            {% empty %}
+
+            <li>No Bills</li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+</div>
+<script>
+    const patientLabels = {{ patient_labels|safe }};
+    const patientData = {{ patient_data|safe }};
+
+    new Chart(document.getElementById("patientChart"), {
+        type: "bar",
+        data: {
+            labels: patientLabels,
+            datasets: [
+                {
+                    label: "Patients",
+                    data: patientData,
+                },
+            ],
+        },
+    });
+
+    const revenueLabels = {{ revenue_labels|safe }};
+    const revenueData = {{ revenue_data|safe }};
+
+    new Chart(document.getElementById("revenueChart"), {
+        type: "line",
+        data: {
+            labels: revenueLabels,
+            datasets: [
+                {
+                    label: "Revenue",
+                    data: revenueData,
+                },
+            ],
+        },
+    });
+
+    new Chart(document.getElementById("billChart"), {
+        type: "doughnut",
+        data: {
+            labels: ["Paid", "Pending"],
+            datasets: [
+                {
+                    data: [
+                        {{ paid_bills }},
+                        {{ pending_bills }}
+                    ],
+                },
+            ],
+        },
+    });
+</script>
+<hr>
+
+<h2>📋 Recent Activity</h2>
+
+<div class="activity-grid">
+
+    <div class="activity-card">
+
+        <h3>👤 Latest Patients</h3>
+
+        <ul>
+
+            {% for patient in recent_patients %}
+
+                <li>
+
+                    {{ patient.first_name }} {{ patient.last_name }}
+
+                </li>
+
+            {% empty %}
+
+                <li>No patients</li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+    <div class="activity-card">
+
+        <h3>📅 Latest Appointments</h3>
+
+        <ul>
+
+            {% for appointment in recent_appointments %}
+
+                <li>
+
+                    {{ appointment.patient }}
+
+                    →
+
+                    {{ appointment.doctor }}
+
+                </li>
+
+            {% empty %}
+
+                <li>No appointments</li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+    <div class="activity-card">
+
+        <h3>💳 Latest Bills</h3>
+
+        <ul>
+
+            {% for bill in recent_bills %}
+
+                <li>
+
+                    Bill #{{ bill.id }}
+
+                    ₹{{ bill.total_amount }}
+
+                </li>
+
+            {% empty %}
+
+                <li>No bills</li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+    <div class="activity-card">
+
+        <h3>💊 Latest Prescriptions</h3>
+
+        <ul>
+
+            {% for prescription in recent_prescriptions %}
+
+                <li>
+
+                    {{ prescription.patient }}
+
+                </li>
+
+            {% empty %}
+
+                <li>No prescriptions</li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+</div>
+{% endblock %}

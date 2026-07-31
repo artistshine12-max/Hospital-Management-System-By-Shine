@@ -1,0 +1,265 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hospital Management System</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header class="topbar">
+
+    <div class="logo">
+
+        <i class="fa-solid fa-hospital"></i>
+
+        <span>Hospital Management System</span>
+
+    </div>
+
+    <div class="header-right">
+
+        <!-- Search -->
+
+        <a href="{% url 'patients' %}" class="header-icon" title="Search">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+        </a>
+
+        <!-- Reports -->
+
+        <a href="{% url 'reports' %}" class="header-icon" title="Reports">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+        </a>
+
+        <!-- Calendar -->
+
+        <a href="{% url 'appointments' %}" class="header-icon" title="Appointments">
+
+            <i class="fa-solid fa-calendar-days"></i>
+
+        </a>
+
+        <!-- Notifications -->
+        <div class="notification-container">
+
+    <a href="{% url 'notifications' %}" class="header-icon" title="Notifications">
+
+        <i class="fa-solid fa-bell"></i>
+
+        {% if unread_notifications > 0 %}
+
+        <span class="notification-badge" id="notificationBadge">
+
+            {{ unread_notifications }}
+
+        </span>
+
+        {% endif %}
+
+    </a>
+
+</div>
+        
+
+        <!-- Settings -->
+
+        <a href="/admin/" class="header-icon" title="Admin Panel">
+
+            <i class="fa-solid fa-user-shield"></i>
+
+        </a>
+<li>
+    <a href="{% url 'hospital_settings' %}">
+        <span class="material-icons">settings</span>
+        Hospital Settings
+    </a>
+</li>
+        <!-- Profile -->
+
+        <div class="profile">
+
+            <i class="fa-solid fa-circle-user"></i>
+
+            <span>{{ request.user.username }}</span>
+<a href="{% url 'profile' %}" class="username">
+    <span class="material-icons">account_circle</span>
+    {{ request.user.username }}
+</a>
+        </div>
+
+        <!-- Logout -->
+
+        <a href="{% url 'logout' %}" class="logout-btn">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+        </a>
+
+    </div>
+
+</header>
+
+<!-- ================= MAIN ================= -->
+
+<div class="container">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <ul>
+<li>
+    <a href="{% url 'profile' %}">
+        <span class="material-icons">person</span>
+        My Profile
+    </a>
+</li>
+            <li>
+
+                <a href="{% url 'dashboard' %}">
+
+                    <i class="fa-solid fa-gauge-high dashboard"></i>
+
+                    Dashboard
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="{% url 'patients' %}">
+
+                    <i class="fa-solid fa-user-group patients"></i>
+
+                    Patients
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="{% url 'doctors' %}">
+
+                    <i class="fa-solid fa-user-doctor doctors"></i>
+
+                    Doctors
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="{% url 'appointments' %}">
+
+                    <i class="fa-solid fa-calendar-check appointments"></i>
+
+                    Appointments
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="{% url 'billing' %}">
+
+                    <i class="fa-solid fa-file-invoice-dollar billing"></i>
+
+                    Billing
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="{% url 'prescriptions' %}">
+
+                    <i class="fa-solid fa-prescription-bottle-medical prescriptions"></i>
+
+                    Prescriptions
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="{% url 'reports' %}">
+
+                    <i class="fa-solid fa-chart-pie reports"></i>
+
+                    Reports
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="{% url 'notifications' %}">
+
+                    <i class="fa-solid fa-bell notifications"></i>
+
+                    Notifications
+
+                </a>
+
+            </li>
+
+            <hr>
+
+            <li>
+
+                <a href="{% url 'logout' %}">
+
+                    <i class="fa-solid fa-right-from-bracket logout"></i>
+
+                    Logout
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+    <!-- PAGE CONTENT -->
+
+    <main class="content">
+
+        {% block content %}
+
+        {% endblock %}
+
+    </main>
+
+</div>
+
+<script src="{% static 'js/script.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+
+</html>
